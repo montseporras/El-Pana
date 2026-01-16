@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar pedido</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<main class="checkout">
+
+    <!-- HEADER -->
+    <div class="section-titlearepa">
+        <button class="back-button" onclick="history.back()">←</button>
+        <h1>Confirmar pedido</h1>
+    </div>
+
+    <!-- NOMBRE -->
+    <div class="card">
+        <label>Nombre y apellido *</label>
+        <input id="full-name" type="text" placeholder="Ej: Juan Pérez">
+    </div>
+
+    <!-- TELÉFONO -->
+    <div class="card">
+        <label>Teléfono *</label>
+        <input id="phone" type="tel" placeholder="Ej: 3511234567">
+    </div>
+
+    <!-- ENTREGA -->
+    <div class="card">
+        <h3>Forma de entrega *</h3>
+        <div class="option-group">
+            <button type="button" class="option-btn" data-delivery="retiro">
+                Lo retiro personalmente
+            </button>
+            <button type="button" class="option-btn" data-delivery="delivery">
+                Necesito que me lo envíen
+            </button>
+        </div>
+    </div>
+
+    <!-- DIRECCIÓN -->
+    <div class="card hidden" id="address-box">
+
+        <label>Dirección *</label>
+        <input id="address" placeholder="Calle y número">
+
+        <label>Referencia</label>
+        <input id="reference" placeholder="Ej: portón negro, timbre rojo">
+
+        <label>Piso / Depto</label>
+        <input id="floor" placeholder="Opcional">
+
+        <div class="map-placeholder" id="open-map">
+            📍 Tocar para marcar ubicación exacta
+        </div>
+
+        <small id="shipping-cost" class="hidden">
+            Envío: $2500
+        </small>
+    </div>
+
+    <!-- PAGO -->
+    <div class="card">
+        <h3>Forma de pago *</h3>
+        <div class="option-group">
+            <button type="button" class="option-btn" data-payment="efectivo">
+                Efectivo
+            </button>
+            <button type="button" class="option-btn" data-payment="online">
+                Transferencia
+            </button>
+        </div>
+    </div>
+
+    <!-- EFECTIVO -->
+    <div class="card hidden" id="cash-box">
+        <label>¿Con cuánto pagás? *</label>
+        <input id="cash-amount" type="number" placeholder="Ej: 10000">
+    </div>
+
+    <!-- INFO ONLINE -->
+    <div class="card hidden" id="online-info">
+        <small>
+            El mensaje que enviarás por WhatsApp incluye un enlace para pagar
+            el total del pedido. No es necesario tener cuenta de MercadoPago.
+        </small>
+    </div>
+
+    <!-- OBSERVACIONES -->
+    <div class="card">
+        <label>Observaciones</label>
+        <textarea id="observations"
+        placeholder="Ej: sin picante, tocar timbre, casa roja..."></textarea>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="total-box">
+        Total: <span id="total">$0</span>
+    </div>
+
+    <!-- ENVIAR -->
+    <button class="send-button" id="send-order">
+        Pedir por WhatsApp
+    </button>
+
+</main>
+
+<!-- MAPA MODAL -->
+<div class="map-modal hidden" id="map-modal">
+
+    <div class="map-header">
+        <span>Ubicarme en el mapa</span>
+        <button id="close-map">✕</button>
+    </div>
+
+    <div id="map" style="width:100%; height:100%;"></div>
+
+    <button class="map-confirm" id="confirm-location">
+        Listo
+    </button>
+
+</div>
+
+<!-- SCRIPTS -->
+<script src="script.js"></script>
+
+<!-- GOOGLE MAPS -->
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY"
+    async defer>
+</script>
+
+</body>
+</html>

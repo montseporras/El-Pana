@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Producto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<main class="product-detail">
+
+    <!-- HEADER PRODUCTO -->
+    <div class="section-titlearepa">
+        <button class="back-button" onclick="history.back()">←</button>
+        <h1 id="product-name"></h1>
+    </div>
+
+    <!-- IMAGEN -->
+    <div class="product-image">
+        <img id="product-img" alt="Producto">
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info-detail">
+        <p id="product-desc"></p>
+
+        <div class="price">
+            <span class="price-current" id="base-price"></span>
+        </div>
+    </div>
+
+    <!-- SALSAS -->
+    <div class="options">
+        <h3>Salsas</h3>
+        <label><input type="radio" name="salsa" value="Criolla"> Salsa criolla</label>
+        <label><input type="radio" name="salsa" value="Ajo"> Salsa de ajo</label>
+    </div>
+
+    <!-- RELLENOS -->
+    <div class="options">
+        <h3>Rellenos extra</h3>
+        <label>
+            <input type="checkbox" value="Queso extra" data-price="500">
+            Queso extra (+$500)
+            </label>
+
+            <label>
+            <input type="checkbox" value="Carne extra" data-price="700">
+            Carne extra (+$700)
+            </label>
+
+    </div>
+
+    <!-- OBSERVACIONES -->
+    <div class="observations">
+        <h3>Observaciones</h3>
+        <textarea id="note" placeholder="Ej: sin cebolla, bien cocida..."></textarea>
+    </div>
+
+</main>
+
+<!-- BARRA FIJA -->
+<div class="add-bar">
+    <div class="quantity">
+        <button id="minus">−</button>
+        <span id="qty">1</span>
+        <button id="plus">+</button>
+    </div>
+
+    <button class="add-button">
+        Agregar · <span id="total-price">$0</span>
+    </button>
+</div>
+
+<!-- MODAL -->
+<dialog id="cart-modal" class="cart-modal">
+    <button class="cart-modal__close" onclick="closeCart()">×</button>
+    <h3>Tu pedido</h3>
+    <div id="cart-summary"></div>
+
+    <div class="cart-actions">
+        <button onclick="closeCart()">Seguir comprando</button>
+        <button onclick="goToCheckout()">Confirmar pedido</button>
+    </div>
+</dialog>
+
+<script src="products-data.js"></script>
+<script src="script.js"></script>
+
+<script>
+
+/* ================= PRODUCTO ================= */
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+const product = PRODUCTS.find(p => p.id === id);
+
+let quantity = 1;
+const basePrice = product.price;
+
+document.getElementById("product-name").textContent = product.name;
+document.getElementById("product-desc").textContent = product.description;
+document.getElementById("product-img").src = product.image;
+document.getElementById("base-price").textContent = `$${basePrice}`;
+
+const qtyEl = document.getElementById("qty");
+
+/* ================= CANTIDAD ================= */
+plus.onclick = () => {
+    quantity++;
+    qtyEl.textContent = quantity;
+    updatePrice();
+};
+
+minus.onclick = () => {
+    if (quantity > 1) {
+        quantity--;
+        qtyEl.textContent = quantity;
+        updatePrice();
+    }
+};
+
+/* ================= PRECIO ================= */
+document.querySelectorAll("input").forEach(i =>
+    i.addEventListener("change", updatePrice)
+);
+
+function updatePrice() {
+    let extras = 0;
+    document.querySelectorAll("input[type='checkbox']:checked")
+        .forEach(i => extras += Number(i.dataset.price));
+
+    const total = (basePrice + extras) * quantity;
+    document.getElementById("total-price").textContent = `$${total}`;
+}
+
+updatePrice();
+
+/* ================= CARRITO ================= */
+function getCart() {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+function updateCartCount() {
+    const el = document.getElementById("cart-count");
+    if (!el) return;
+    const cart = getCart();
+    el.textContent = cart.reduce((s, p) => s + p.quantity, 0);
+}
+
+/* ================= AGREGAR ================= */
+document.querySelector(".add-button").onclick = () => {
+    const cart = getCart();
+
+    const salsa =
+        document.querySelector("input[name='salsa']:checked")?.value || "Sin salsa";
+
+    const rellenos = [...document.querySelectorAll("input[type='checkbox']:checked")]
+        .map(i => i.parentElement.textContent.trim());
+
+    const extrasPrice = [...document.querySelectorAll("input[type='checkbox']:checked")]
+        .reduce((s, i) => s + Number(i.dataset.price), 0);
+
+    cart.push({
+        id: product.id,
+        name: product.name,
+        priceUnit: basePrice + extrasPrice,
+        quantity: quantity,
+        salsa,
+        rellenos,
+        note: document.getElementById("note").value
+    });
+
+    saveCart(cart);
+    renderCart(cart);
+    document.getElementById("cart-modal").showModal();
+};
+
+/* ================= MODAL ================= */
+function renderCart(cart) {
+    const box = document.getElementById("cart-summary");
+    box.innerHTML = "";
+
+    cart.forEach(p => {
+        box.innerHTML += `
+            <div class="cart-item">
+                <strong>${p.quantity}× ${p.name}</strong>
+                <div>${p.salsa}</div>
+                ${p.rellenos.length ? `<small>${p.rellenos.join(", ")}</small>` : ""}
+                <div>$${p.priceUnit * p.quantity}</div>
+            </div>
+        `;
+    });
+}
+
+function closeCart() {
+    document.getElementById("cart-modal").close();
+}
+
+function goToCheckout() {
+    window.location.href = "carrito.html";
+}
+</script>
+
+</body>
+</html>

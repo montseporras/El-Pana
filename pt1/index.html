@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pana</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="fotos\logo mini .png" type="image/png">
+</head>
+
+<body>
+
+    <!-- HEADER DINÁMICO -->
+    <div id="header-container"></div>
+
+    <main class="profile">
+        <div class="profile__data-container">
+    <div class="carousel">
+        <div class="carousel__track">
+            <img class="carousel__img" src="fotos/1200_900.jpeg" alt="Arepas El Pana">
+            <img class="carousel__img" src="fotos/arepas web principal 2.png" alt="Arepas El Pana">
+            <img class="carousel__img" src="fotos/arepas web principal 3.png" alt="Arepas El Pana">
+        </div>
+    </div>
+
+    <div class="profile__overlay">
+        <a class="button" href="productos.html">Pedir</a>
+        <a class="button" href="https://wa.me/5493516994795?text=Hola,%20quiero%20hacer%20un%20pedido" target="_blank">WhatsApp</a>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://www.instagram.com/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="mailto:elpanacba@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+</div>
+
+
+        </div>
+    </main>
+
+    <!-- MODAL HORARIOS -->
+<dialog id="schedule-modal" class="modal">
+    <div class="modal__content">
+        <form method="dialog">
+            <button class="modal__close-button" aria-label="Cerrar">
+            ✕
+            </button>
+        </form>
+
+        <h2 class="modal__title">Horarios</h2>
+        <p class="modal__text">Lunes a Viernes: 11:00 – 23:00</p>
+        <p class="modal__text">Sábados y Domingos: 12:00 – 00:00</p>
+    </div>
+</dialog>
+
+    <script src="script.js"></script>
+    <script>
+    const track = document.querySelector('.carousel__track');
+    const slides = document.querySelectorAll('.carousel__img');
+
+    // Clonamos la primera imagen
+    const firstClone = slides[0].cloneNode(true);
+    track.appendChild(firstClone);
+
+    let index = 0;
+    const totalSlides = slides.length;
+    const slideWidth = track.clientWidth;
+
+    setInterval(() => {
+        index++;
+        track.style.transition = "transform 0.8s ease-in-out";
+        track.style.transform = `translateX(-${index * 100}%)`;
+
+        if (index === totalSlides) {
+            setTimeout(() => {
+                track.style.transition = "none";
+                track.style.transform = "translateX(0)";
+                index = 0;
+            }, 800);
+        }
+    }, 3500);
+    </script>
+<script src="products-data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
