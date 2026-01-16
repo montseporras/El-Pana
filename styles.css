@@ -754,8 +754,8 @@ dialog {
 /* IMAGEN HERO */
 .product-image img {
     width: 100%;
-    height: auto;               /* 👈 NO SE CORTA */
-    display: block;             /* 👈 evita superposición */
+    height: auto;               
+    display: block;           
     border-bottom-left-radius: 24px;
     border-bottom-right-radius: 24px;
 }
@@ -763,7 +763,7 @@ dialog {
 /* TARJETA INFO */
 .product-info-detail {
     background: #fff;
-    margin: 16px;               /* 👈 SIN NEGATIVO */
+    margin: 16px;               
     padding: 20px;
     border-radius: 24px;
     box-shadow: 0 10px 25px rgba(0,0,0,.08);
@@ -1003,6 +1003,7 @@ dialog {
     font-weight: 800;
     cursor: pointer;
     z-index: 6;
+    color: #000;
 }
 
 /* =================================================== */
@@ -1317,5 +1318,6 @@ dialog {
     margin-top: 12px;
     background: #f5f5f5;
 }
+
 
 
