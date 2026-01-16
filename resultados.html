@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de búsqueda</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <main class="product__page">
+
+        <div class="section-titlearepa">
+            <button class="back-button" onclick="history.back()">←</button>
+            <h1>Resultados de Búsqueda</h1>
+        </div>
+
+        <div class="product-list" id="results"></div>
+
+    <dialog id="schedule-modal">
+        <div class="modal__content">
+            <h2 class="modal__title">Horarios</h2>
+            <p>Lunes a Viernes: 11:00 – 23:00</p>
+            <p>Sábados y Domingos: 12:00 – 00:00</p>
+            <button class="modal__close-button">✕</button>
+        </div>
+    </dialog>
+
+
+</main>
+
+<script src="products-data.js"></script>
+<script src="script.js"></script>
+
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get("search");
+
+    const container = document.getElementById("results");
+
+    if (!value) {
+        container.innerHTML = "<p>No se ingresó ninguna búsqueda</p>";
+        return;
+    }
+
+    const search = value.toLowerCase();
+
+    const matches = PRODUCTS.filter(p =>
+        p.name.toLowerCase().includes(search)
+    );
+
+    if (matches.length === 0) {
+        container.innerHTML = "<p>No se encontraron productos</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    matches.forEach(p => {
+        container.innerHTML += `
+            <div class="product-row" onclick="location.href='detalleproductos.html?id=${p.id}'">
+                <img src="${p.image}" alt="${p.name}">
+                <div class="product-info">
+                    <h3>${p.name}</h3>
+                    <div class="price">
+                        <span class="price-current">$${p.price}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+});
+</script>
+
+</body>
+</html>
