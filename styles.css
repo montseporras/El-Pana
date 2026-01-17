@@ -186,7 +186,7 @@ body, div, ul, nav, header, footer, a, li, label, button {
 /* ================= STATUS BAR ================= */
 .status-bar {
     background-color: #e74c3c;
-    color: white;
+    color: #000;
     padding: 10px;
     text-align: center;
 }
@@ -1322,6 +1322,7 @@ dialog {
     margin-top: 12px;
     background: #f5f5f5;
 }
+
 
 
 
