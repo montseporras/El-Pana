@@ -1207,6 +1207,7 @@ dialog {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #000;
 }
 
 .option-group button:hover {
@@ -1321,6 +1322,7 @@ dialog {
     margin-top: 12px;
     background: #f5f5f5;
 }
+
 
 
 
